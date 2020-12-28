@@ -1,38 +1,23 @@
-const db = require("../models");
-const Korisnik = db.korisnik;
-const Op = db.Sequelize.Op;
+const Korisnik = require('../models/korisnik.model');
 
-// Create and Save a new Tutorial
-exports.create = (req, res) => {
-  
+exports.create = function(req, res) {
+const novi_korisnik = new Korisnik(req.body);
+//handles null error
+if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+  res.status(400).send({ error:true, message: 'Popunite sva polja!' });
+}else{
+Korisnik.create(novi_korisnik, function(err, korisnik1) {
+  if (err)
+  res.send(err);
+  res.json({error:false,message:"Korisnik uspješno dodan!",data:korisnik1});
+});
+}
 };
 
-// Retrieve all Tutorials from the database.
-exports.findAll = (req, res) => {
-  
-};
-
-// Find a single Tutorial with an id
-exports.findOne = (req, res) => {
-  
-};
-
-// Update a Tutorial by the id in the request
-exports.update = (req, res) => {
-  
-};
-
-// Delete a Tutorial with the specified id in the request
-exports.delete = (req, res) => {
-  
-};
-
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-  
-};
-
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  
+exports.findById = function(req, res) {
+Korisnik.findById(req.params.id, function(err, korisnik1) {
+  if (err)
+  res.send(err);
+  res.json(korisnik1);
+});
 };
