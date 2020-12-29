@@ -9,17 +9,25 @@ var Rezervacija = function(rezervacija){
   this.datum_do            = rezervacija.datum_do;
 };
 
-Rezervacija.create = function (newEmp, result) {
-    konekcija.query("INSERT INTO rezervacija set ?", newEmp, function (err, res) {
-    if(err) {
-      console.log("error: ", err);
+
+  Rezervacija.create = async (newEmp, result) => {
+    try {
+      await konekcija.query("INSERT INTO rezervacija set ?", newEmp, function (err, res) {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+        }
+        else {
+          console.log(res.insertId);
+          result(null, res.insertId);
+        }
+      });
+    }
+    catch (err) {
       result(err, null);
+      console.log("Error", err);
     }
-    else{
-      console.log(res.insertId);
-      result(null, res.insertId);
-    }
-    });
-    };
+  };
+
 
 module.exports= Rezervacija;
