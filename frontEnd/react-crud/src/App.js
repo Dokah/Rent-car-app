@@ -3,6 +3,7 @@ import {Link, Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Router, Switch } from "react-router-dom";
 import {Homepage} from "./components/Homepage"
+import Register from "./components/Register"
 
 class App extends Component {
   render() {
@@ -26,6 +27,7 @@ class App extends Component {
         <div className="container mt-3">
            <Switch>
             <Route exact path={["/", "/home"]} component={Homepage} />
+            <Route exact path = {["/register"]} component = {Register} />
           </Switch> 
         </div>
       </div>

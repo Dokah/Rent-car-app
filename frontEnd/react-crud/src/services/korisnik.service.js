@@ -2,19 +2,19 @@ import http from "../http-common";
 
 class KorisnikDataService {
   getAll() {
-    return http.get("/korisnik");
+    return http.get("/korisnici");
   }
 
   get(id) {
-    return http.get(`/korisnik/={id}`);
+    return http.get(`/korisnici/id/${id}`);
   }
 
-  get_login_id(email, password){
-    return http.get('/korisnik/email=${email}=${password}');
+  get_nadimak_id(nadimak){
+    return http.get(`/korisnici/nadimak/${nadimak}`);
   }
 
   create(data) {
-    return http.post("/korisnik", data);
+    return http.post("/korisnici", data);
   }
 }
 
