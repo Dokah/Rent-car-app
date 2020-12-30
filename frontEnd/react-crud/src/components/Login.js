@@ -11,7 +11,6 @@ export default class Login extends Component {
     render() {
         return (
             <form>
-
                 <h3>Log in</h3>
 
                 <div className="form-group">

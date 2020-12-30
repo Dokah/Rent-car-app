@@ -27,15 +27,6 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//konekcija na bazu
-/*var connection=con.connection;
-connection.connect(function(err) {
-  if (err) {
-    return console.error('error: ' + err.message);
-  }
-  console.log('Spojeno na MySQL server.');
-});*/
-
 // Home ruta
 app.get("/", (req, res) => {
   res.json({ message: "Pokrenut server!"});

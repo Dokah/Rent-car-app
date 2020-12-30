@@ -20,4 +20,12 @@ Korisnik.findById(req.params.id, function(err, korisnik1) {
   res.send(err);
   res.json(korisnik1);
 });
-};
+}
+
+exports.findByNadimak = function(req, res) {
+  Korisnik.findByNadimak(req.params.nadimak, function(err, korisnik1) {
+    if (err)
+    res.send(err);
+    res.json(korisnik1);
+  });
+}

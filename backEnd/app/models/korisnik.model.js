@@ -33,4 +33,17 @@ else{
 }
 });
 };
+
+Korisnik.findByNadimak = function (nadimak, result) {
+  konekcija.query("SELECT * from korisnik WHERE nadimak = ?", nadimak, function (err, res) {
+  if(err) {
+    console.log("error: ", err);
+    result(err, null);
+  }
+  else{
+    result(null, res);
+  }
+  });
+  };
+
 module.exports= Korisnik;
