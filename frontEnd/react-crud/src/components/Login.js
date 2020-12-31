@@ -4,6 +4,7 @@ import "../index.css";
 import { Router, Switch } from "react-router-dom";
 import KorisnikDataService from "../services/korisnik.service";
 import Homepage from "../components/Homepage";
+import App from "../App";
 
 export default class Login extends Component {
     
@@ -13,10 +14,14 @@ export default class Login extends Component {
         this.state = {password: ''};
         this.state = {korisnik: []};
         this.state = {logiran: false};
+        this.state = {krivaLozinka: false};
+        this.state = {nemaKorisnika: false};
+        this.state = {je_admin: false};
         this.checkValues = this.checkValues.bind(this);
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
-        this.provjeraLozinke = this.provjeraLozinke.bind(this);
+        this.provjeraAdminLozinka = this.provjeraAdminLozinka.bind(this);
+        this.handleWrongUser = this.handleWrongUser.bind(this);
     }
 
     handleChangeUsername = event => {
@@ -27,18 +32,32 @@ export default class Login extends Component {
         this.setState({password: event.target.value});
     };
 
+     handleWrongUser =()=>{
+        console.log("HENDLAM");
+        this.setState({nemaKorisnika: true});
+    };
+
     checkValues =event =>{
         console.log(this.state.username);
         console.log(this.state.password);
 
         KorisnikDataService.get_nadimak_id(this.state.username).then(Response => {
-            this.setState({korisnik: Response.data});
+            this.setState({korisnik: Response.data},()=>{
+                console.log(this.state.korisnik[0]);
+                if(this.state.korisnik[0] === undefined){
+                    this.handleWrongUser();
+                }
+                else{
+                this.provjeraAdminLozinka();
+                }
+            });
         }).catch (e=> {
             console.log(e);
         });
     };
 
-     provjeraLozinke=event=>{
+    provjeraAdminLozinka=()=>{
+        console.log(this.state.korisnik[0].lozinka)
 
         if (this.state.password === this.state.korisnik[0].lozinka){
             console.log(" Točna lozinka!");
@@ -46,6 +65,9 @@ export default class Login extends Component {
         }
         else {
             console.log( "Kriva lozinka!");
+            this.setState({krivaLozinka: true},()=>{
+                console.log(this.state.krivaLozinka);
+            });
         }
     }
 
@@ -54,10 +76,17 @@ export default class Login extends Component {
     render() {
         if(this.state.logiran){
             return (
-                <p>Saka čast!</p>
+                <div className ="container">
+                        <Route exact path={[ "/"]} component={App} />
+                    <div className="center">
+                    <Link to={{pathname: "/", state: {logiran:this.state.logiran}}}>
+                        <button type="button" className="btn btn-dark btn-lg btn-block" >GO TO HOME SCREEN</button>
+                        </Link>
+                    </div>
+                </div>
             )
         }
-        else{
+        if (!this.state.nemaKorisnika && !this.state.krivaLozinka){
         return (
             <form>
                 <h3>Log in</h3>
@@ -77,7 +106,7 @@ export default class Login extends Component {
                         <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
                     </div>
                 </div>
-                <button type="button" className="btn btn-dark btn-lg btn-block" onClick={this.provjeraLozinke}>Sign in</button>
+                <button type="button" className="btn btn-dark btn-lg btn-block" onClick={this.checkValues}>Sign in</button>
                 <p className="forgot-password text-right">
                     Forgot <a href="#">password?</a>
                 </p>
@@ -87,6 +116,40 @@ export default class Login extends Component {
                 </Link>
             </form>
         );
+        }
+        else if (this.state.nemaKorisnika || this.state.krivaLozinka){
+            return(
+                <form>
+                <h3>Log in</h3>
+
+                <div className="form-group">
+                    <label>Username</label>
+                    <input type="text" className="form-control" placeholder="Enter username" onChange={this.handleChangeUsername} value={this.state.username} name = "username" />
+                </div>
+                <div className="form-group">
+                    <label>Password</label>
+                    <input type="password" className="form-control" placeholder="Enter password" onChange={this.handleChangePassword} value={this.state.password} password = "password"/>
+                </div>
+
+                <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <p className= "wrong-password">Wrong password or username!</p>
+                </div>
+                <button type="button" className="btn btn-dark btn-lg btn-block" onClick={this.checkValues}>Sign in</button>
+                <p className="forgot-password text-right">
+                    Forgot <a href="#">password?</a>
+                </p>
+                <p>OR</p>
+                <Link to= "/register">
+                <button type= "button" className ="btn btn-dark btn-lg btn-block">Register</button>
+                </Link>
+            </form>
+            )
+        }
     }
-}
 }

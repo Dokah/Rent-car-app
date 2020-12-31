@@ -1,7 +1,6 @@
 var konekcija = require ('../config/dbConfig');
 //Stvaranje objekta korisnika
 var Korisnik = function(korisnik){
-  this.korisnik_id    = korisnik.korisnik_id;
   this.nadimak        = korisnik.nadimak;
   this.lozinka        = korisnik.lozinka;
   this.ime            = korisnik.ime;
