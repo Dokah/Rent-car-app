@@ -3,6 +3,7 @@ import {Link, Route} from 'react-router-dom';
 import "../index.css";
 import { Router, Switch } from "react-router-dom";
 import KorisnikDataService from "../services/korisnik.service";
+import AdministratorDataService from "../services/administrator.service";
 import Homepage from "../components/Homepage";
 import App from "../App";
 
@@ -22,6 +23,7 @@ export default class Login extends Component {
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.provjeraAdminLozinka = this.provjeraAdminLozinka.bind(this);
         this.handleWrongUser = this.handleWrongUser.bind(this);
+        this.handleAdminChange = this.handleAdminChange.bind(this);
     }
 
     handleChangeUsername = event => {
@@ -36,6 +38,10 @@ export default class Login extends Component {
         console.log("HENDLAM");
         this.setState({nemaKorisnika: true});
     };
+
+    handleAdminChange =()=>{
+        this.setState ({je_admin: true});
+    }
 
     checkValues =event =>{
         console.log(this.state.username);
@@ -62,6 +68,12 @@ export default class Login extends Component {
         if (this.state.password === this.state.korisnik[0].lozinka){
             console.log(" Točna lozinka!");
             this.setState({logiran: true});
+            AdministratorDataService.get(this.state.korisnik[0].korisnik_id).then(Response => {
+                if(Response.data[0] != undefined){
+                    console.log("Ovaj korisnik je admin!");
+                    this.setState ({je_admin : true});
+                }
+            })
         }
         else {
             console.log( "Kriva lozinka!");
@@ -79,7 +91,7 @@ export default class Login extends Component {
                 <div className ="container">
                         <Route exact path={[ "/"]} component={App} />
                     <div className="center">
-                    <Link to={{pathname: "/", state: {logiran:this.state.logiran}}}>
+                    <Link to={{pathname: "/", state: {logiran:this.state.logiran, je_admin:this.state.je_admin, username: this.state.username}}}>
                         <button type="button" className="btn btn-dark btn-lg btn-block" >GO TO HOME SCREEN</button>
                         </Link>
                     </div>

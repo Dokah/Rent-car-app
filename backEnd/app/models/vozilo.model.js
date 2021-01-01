@@ -36,8 +36,8 @@ else{
 });
 };
 
-Vozilo.findByModel = function (id, result) {
-    konekcija.query("Select * from vozilo where model_id = ? ", id, function (err, res) {
+Vozilo.findByMarka = function (marka, result) {
+    konekcija.query("Select * from sva_vozila where naziv_marke = ? ", marka, function (err, res) {
     if(err) {
       console.log("error: ", err);
       result(err, null);
@@ -61,7 +61,7 @@ konekcija.query("Select * from vozilo where tip_vozila_id = ? ", tip, function (
 };
 
 Vozilo.findByTipMjenjaca = function (tip, result) {
-    konekcija.query("Select * from vozilo where tip_mjenjaca_id = ? ", tip, function (err, res) {
+    konekcija.query("Select * from sva_vozila where naziv_tipa_mjenjaca = ? ", tip, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(err, null);
@@ -73,7 +73,7 @@ Vozilo.findByTipMjenjaca = function (tip, result) {
     };
 
 Vozilo.findAll = function (result) {
-konekcija.query("Select * from vozilo", function (err, res) {
+konekcija.query("Select * from sva_vozila", function (err, res) {
 if(err) {
   console.log("error: ", err);
   result(null, err);
@@ -84,5 +84,31 @@ else{
 }
 });
 };
+
+Vozilo.manjaVeca = function (result) {
+  konekcija.query("Select * from manja_veca", function (err, res) {
+  if(err) {
+    console.log("error: ", err);
+    result(null, err);
+  }
+  else{
+    console.log('Vozila : ', res);
+    result(null, res);
+  }
+  });
+  };
+
+  Vozilo.vecaManja = function (result) {
+    konekcija.query("Select * from veca_manja", function (err, res) {
+    if(err) {
+      console.log("error: ", err);
+      result(null, err);
+    }
+    else{
+      console.log('Vozila : ', res);
+      result(null, res);
+    }
+    });
+    };
 
 module.exports= Vozilo;

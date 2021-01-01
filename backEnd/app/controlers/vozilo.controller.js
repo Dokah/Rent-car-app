@@ -32,8 +32,8 @@ Vozilo.findById(req.params.id, function(err, vozilo1) {
 });
 };
 
-exports.findByModel = function(req, res) {
-    Vozilo.findByModel(req.params.id, function(err, vozilo1) {
+exports.findByMarka = function(req, res) {
+    Vozilo.findByMarka(req.params.marka, function(err, vozilo1) {
       if (err)
       res.send(err);
       res.json(vozilo1);
@@ -55,3 +55,23 @@ exports.findByTipMjenjaca = function(req, res) {
         res.json(vozilo1);
         });
     };
+
+exports.manjaVeca = function(req, res) {
+Vozilo.manjaVeca(function(err, vozilo1) {
+  console.log('controller')
+  if (err)
+  res.send(err);
+  console.log('res', vozilo1);
+  res.send(vozilo1);
+});
+};
+
+exports.vecaManja = function(req, res) {
+  Vozilo.vecaManja(function(err, vozilo1) {
+    console.log('controller')
+    if (err)
+    res.send(err);
+    console.log('res', vozilo1);
+    res.send(vozilo1);
+  });
+  };

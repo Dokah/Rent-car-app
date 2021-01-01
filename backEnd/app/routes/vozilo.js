@@ -9,8 +9,12 @@ router.post('/', voziloKontroler.create);
 router.get('/id=:id', voziloKontroler.findById);
 // Dohvati sva vozila
 router.get('/', voziloKontroler.findAll);
+//Dohvati sva vozila po cijeni manja - veca
+router.get('/manjaveca', voziloKontroler.manjaVeca);
+//Dohvati sva vozila po cijeni veca - manja
+router.get('/vecamanja', voziloKontroler.vecaManja);
 // Dohvati vozila po modelu 
-router.get ('/model=:id', voziloKontroler.findByModel);
+router.get ('/marka=:marka', voziloKontroler.findByMarka);
 // Dohvati vozila po tipu vozila
 router.get ('/tip_v=:id', voziloKontroler.findByTipVozila);
 // Dohvati vozila po tipu mjenjaca
