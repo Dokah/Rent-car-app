@@ -85,30 +85,25 @@ export default class Register extends React.Component {
 
   render() {
     return (
-     // <div className="base-container" className= "container" >
      <form>
+       <div className="base-container" className= "container" >
          <h3>Register</h3>
-         <div className= "form-group"></div>
         <div className="form-group">
             <label htmlFor="username">Username</label>
             <input type="text" name="username" onInput={this.onChangeNadimak} placeholder="username" />
         </div>
-        <div className= "form-group"></div>
         <div className="form-group">
             <label htmlFor="password">Password</label>
             <input type="password" name="password" onInput={this.onChangeLozinka} placeholder="password" />
         </div>
-        <div className= "form-group"></div>
         <div className="form-group">
             <label htmlFor="password">First name</label>
             <input type="text" name="name" onInput={this.onChangeIme} placeholder="First name" />
         </div>
-        <div className= "form-group"></div>
         <div className="form-group">
             <label htmlFor="surname">Surname</label>
             <input type="text" name="surname" onInput={this.onChangePrezime} placeholder="surname" />
         </div>
-        <div className= "form-group"></div>
         <div className="form-group">
             <label htmlFor="username">Date of birth</label>
             <input type="date" name="dateOfBirth" onInput={this.onChangeDatumRodenja} placeholder="yyyy/mm/dd" />
@@ -120,8 +115,8 @@ export default class Register extends React.Component {
           </button>
          </Link>
         </div>
+        </div>
         </form>
-     // </div>
     );
   }
 }
