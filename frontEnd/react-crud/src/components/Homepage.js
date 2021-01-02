@@ -9,17 +9,42 @@ import VoziloDataService from "../services/vozilo.service";
 export default class Homepage extends Component {
   constructor(props){
     super(props);
-    this.state={images : ['https://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-hi.png','https://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-hi.png','https://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-hi.png']};
+    this.state={vozila : []};
+    this.state ={ucitao: false};
+  }
+
+  componentDidMount(){
+    VoziloDataService.getAll().then(Response => {
+          this.setState ({vozila : Response.data},()=>{
+            this.setState ({ucitao: true});
+          });
+  })
   }
   
   render() {
+    if(this.state.ucitao){
   return(
     <div>
-      <div className="gallery">
-      {this.state.images.map((src, index ) => (<img key={index} src={src} width="150px" height="150 px" />))}
+      <div className="gallery row ">
+      {this.state.vozila.map((src, index ) => (<img key={index} src={src.slika_vozila_url} width="800px" height="600 px" />))}
       </div>
-    </div>
+      {this.state.vozila.map((src, index ) => (<text key={index}>Marka: {src.naziv_marke}</text>))}
+      {this.state.vozila.map((src, index ) => (<text key={index}>Model: {src.naziv_modela}</text>))}
+      {this.state.vozila.map((src, index ) => (<text key={index}>Opis: {src.opis_vozila}</text>))}
+      {this.state.vozila.map((src, index ) => (<text key={index}>Tip vozila: {src.naziv_tipa_vozila}</text>))}
+      {this.state.vozila.map((src, index ) => (<text key={index}>Tip mjenjača: {src.naziv_tipa_mjenjaca}</text>))}
+      </div>
   )
+}
+  else {
+    return(
+      <div>
+        <div className="gallery">
+        poyy
+        </div>
+      </div>
+    )
+  }
 }
 
 }

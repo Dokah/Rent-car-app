@@ -67,3 +67,18 @@ text-align: center;
   grid-template-rows: repeat(8, 5vw);
   grid-gap: 15px;
 }
+
+div.item {
+  vertical-align: top;
+  display: inline-block;
+  text-align: center;
+  width: 120px;
+}
+img {
+  width: 100px;
+  height: 100px;
+  background-color: grey;
+}
+.caption {
+  display: block;
+}

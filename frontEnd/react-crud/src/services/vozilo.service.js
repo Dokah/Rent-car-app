@@ -1,23 +1,12 @@
 import http from "../http-common";
 
-class KorisnikDataService {
+class VoziloDataService {
   getAll() {
-    return http.get("/korisnici");
+    return http.get("/vozilo/");
   }
-
-  get(id) {
-    return http.get(`/korisnici/id/${id}`);
-  }
-
-  get_nadimak_id(nadimak){
-    return http.get(`/korisnici/nadimak/${nadimak}`);
-  }
-
-  create(data) {
-    return http.post("/korisnici", data);
-  }
+  
 }
 
 
 
-export default new KorisnikDataService();
+export default new VoziloDataService();
