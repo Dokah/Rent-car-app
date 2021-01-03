@@ -4,8 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Router, Switch } from "react-router-dom";
 import Homepage from "./components/Homepage";
 import Register from "./components/Register";
+import DodajVozila from "./components/DodajVozila"
 import Login from "./components/Login";
 import SveRezervacije from "./components/SveRezervacije";
+import Rezervacija from "./components/Rezervacija"
 import "../src/index.css";
 import { withRouter } from "react-router-dom";
 
@@ -30,7 +32,6 @@ class App extends Component {
 
   componentDidMount() {
     const Auth = require("../src/auth/auth");
-    let brojac =0;
 
     const userData = Auth.getCookie("User");
     const userDataAdmin = Auth.getCookie("User_admin");
@@ -49,7 +50,9 @@ class App extends Component {
     const Auth = require("../src/auth/auth");
     this.setState({ logiran: false });
     Auth.deleteCookie("User");
-    Auth.deleteCookie("User_admin")
+    Auth.deleteCookie("User_admin");
+    Auth.deleteCookie("Vozilo");
+    this.props.history.push("/");
     window.location.reload();
   };
 
@@ -90,6 +93,7 @@ class App extends Component {
               <Route exact path={["/register"]} component={Register} />
               <Route exact path={["/"]} component={Homepage} />
               <Route exact path={["/rezervacije"]} component={SveRezervacije} />
+              <Route exact path = {["/rezerviraj"]} component = {Rezervacija} />
             </Switch>
           </div>
         </div>
@@ -129,6 +133,7 @@ class App extends Component {
               <Route exact path={["/register"]} component={Register} />
               <Route exact path={["/"]} component={Homepage} />
               <Route exact path={["/rezervacije"]} component={SveRezervacije} />
+              <Route exact path ={["/dodajvozila"]} component={DodajVozila} />
             </Switch>
           </div>
         </div>

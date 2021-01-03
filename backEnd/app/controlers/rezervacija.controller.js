@@ -13,3 +13,11 @@ Rezervacija.create(nova_rezervacija, function(err, rezervacija1) {
 });
 }
 };
+
+exports.findById = function(req, res) {
+  Rezervacija.findById(req.params.id, function(err, korisnik1) {
+    if (err)
+    res.send(err);
+    res.json(korisnik1);
+  });
+  }

@@ -29,5 +29,17 @@ var Rezervacija = function(rezervacija){
     }
   };
 
+  Rezervacija.findById = function (id, result) {
+    konekcija.query("Select * from rezervacija where korisnik_id = ? ", id, function (err, res) {
+    if(err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else{
+      result(null, res);
+    }
+    });
+    };
+
 
 module.exports= Rezervacija;
