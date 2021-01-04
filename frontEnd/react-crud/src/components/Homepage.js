@@ -3,13 +3,14 @@ import { Link, Route } from "react-router-dom";
 import "../index.css";
 import { Router, Switch } from "react-router-dom";
 import VoziloDataService from "../services/vozilo.service";
+import ModelDataService from "../services/model.service";
 import Auth from "../auth/auth"
 
 export default class Homepage extends Component {
   constructor(props) {
     super(props);
     this.state = { vozila: [],
-       ucitao: false, logiran: false };
+       ucitao: false, logiran: false, cijene: [] };
 
     this.prosljediIDVozila = this.prosljediIDVozila.bind(this);
   }
@@ -25,7 +26,12 @@ export default class Homepage extends Component {
       this.setState({ vozila: Response.data }, () => {
         this.setState({ ucitao: true });
       });
+     ModelDataService.getAll().then((Response)=>{
+        console.log(Response.data);
+        this.setState({cijene: Response.data},()=>{console.log(this.state.cijene[1].cijena);});
+      })
     });
+
   }
   
   prosljediIDVozila(x){
@@ -35,7 +41,7 @@ export default class Homepage extends Component {
   }
 
   render() {
-    if (this.state.ucitao && this.state.logiran ) {
+    if (this.state.ucitao && this.state.logiran && this.state.cijene[0] ) {
       return (
           <div >
             {this.state.vozila.map((src, index) => (
@@ -58,6 +64,9 @@ export default class Homepage extends Component {
               </div>
               <div className="desc">
               <text key={index}>Tip mjenjača: {src.naziv_tipa_mjenjaca}</text>
+              </div>
+              <div className="desc">
+              <text key={index}>Cijena: {src.cijena} kn/dan </text>
               </div>
               <button className="btn btn-danger " key={index} onClick={()=>this.prosljediIDVozila(src.vozilo_id)}>Rezerviraj!</button>
               </div>
@@ -89,6 +98,9 @@ export default class Homepage extends Component {
               </div>
               <div className="desc">
               <text key={index}>Tip mjenjača: {src.naziv_tipa_mjenjaca}</text>
+              </div>
+              <div className="desc">
+              <text key={index}>Cijena: Potrebna registracija! </text>
               </div>
               </div>
               </div>

@@ -19,6 +19,19 @@ else{
 });
 };
 
+Model.findAll = function (result) {
+  konekcija.query("Select * from model", function (err, res) {
+  if(err) {
+    console.log("error: ", err);
+    result(null, err);
+  }
+  else{
+    console.log('Modeli : ', res);
+    result(null, res);
+  }
+  });
+  };
+
 
 
 module.exports= Model;

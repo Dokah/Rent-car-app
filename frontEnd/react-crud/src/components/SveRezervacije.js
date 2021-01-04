@@ -9,74 +9,80 @@ export default class Register extends React.Component {
   constructor(props) {
       super(props);
       this.dohvatiRezervacije = this.dohvatiRezervacije.bind(this);
-      this.state = {rezervacija: "", naziv:"",nazivSalona: "", datumRezervacije: "", datumDo: "",};
-      this.test = this.test.bind(this);
+      this.state = {rezervacija: "", rezervacija2: []};
   }
 
-  dohvatiRezervacije (){
+   dohvatiRezervacije (){
     const Auth = require("../auth/auth");
     const userData = Auth.getCookie("User");
-    console.log(userData.korisnik_id);
+    var sviPodaciOAutima = [];
 
-    RezervacijaDataService.getById(userData.korisnik_id)
+     RezervacijaDataService.getById(userData.korisnik_id)
       .then((Response) => {
-        this.setState({ rezervacija: Response.data }, () => {
-          console.log(this.state.rezervacija);
-          var mySQLDateRezervacije = Response.data[0].datum_rezervacije;
+        this.setState({ rezervacija: Response.data }, async() => {
+          for(let i=0;i<this.state.rezervacija.length;i++){
+          let podaci = {auto:"", salon:"", datumRezervacije: "", datumDo: "",};
+            
+         await VoziloDataService.getById(Response.data[i].vozilo_id).then((Response1)=>{
+            podaci.auto= Response1.data[0].opis_vozila;
+          }) //Kraj vozilo data servisa
+
+         await SalonDataService.getById(Response.data[i].salon_id).then((Response2)=>{
+            let podaciSalon = Response2.data[0].naziv_salona;
+            podaci.salon = podaciSalon;
+          }) //kraj Salon data servisa
+
+          var mySQLDateRezervacije = Response.data[i].datum_rezervacije;
           mySQLDateRezervacije= mySQLDateRezervacije.split('T')[0];
-          var mySQLDateDo = Response.data[0].datum_do;
+          podaci.datumRezervacije= mySQLDateRezervacije;
+
+          var mySQLDateDo = Response.data[i].datum_do;
           mySQLDateDo = mySQLDateDo.split('T')[0];
-          this.setState({datumRezervacije: mySQLDateRezervacije});
-          this.setState({datumDo : mySQLDateDo});
+          podaci.datumDo = mySQLDateDo;
 
-          VoziloDataService.getById(Response.data[0].vozilo_id).then((Response)=>{
-              console.log(Response.data[0].opis_vozila);
-              this.setState({naziv: Response.data[0].opis_vozila})
-              SalonDataService.getById(this.state.rezervacija[0].salon_id).then((Response)=>{
-                  console.log(Response.data[0]);
-                  this.setState({nazivSalona: Response.data[0].naziv_salona});
-              })
-
-          })
+          sviPodaciOAutima.push(podaci);
+        } //kraj petlje
+        console.log(sviPodaciOAutima[0]);
+        this.setState({rezervacija2: sviPodaciOAutima},()=>{
+          console.log("----");
+          console.log(this.state.rezervacija2);
         });
+        }); //Kraj početnoga responsa
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-  test (){
-      console.log(this.state.rezervacija[0]);
-      window.location.reload();
-  }
-
   componentDidMount(){
       this.dohvatiRezervacije();
   }
 
   render(){
-      if(this.state.rezervacija[0] == undefined){
-
-
+      if(this.state.rezervacija2 === undefined){
       return(
         <ul class="list-group">
         <li class="list-group-item">
-            <text>Opet pozdrav</text>
+            <text>Pozdrav</text>
         </li>
       </ul>
       )
   }
 else{
     return(
+      <div>
         <ul class="list-group">
             <h3>Popis vaših rezervacija</h3>
-        <li class="list-group-item">
-            <text>Naziv vozila: {this.state.naziv}, </text>
-            <text>Naziv salona: {this.state.nazivSalona}, </text>
-            <text>Datum rezervacije: {this.state.datumRezervacije}, </text>
-            <text>Datum isteka: {this.state.datumDo} </text>
+          {this.state.rezervacija2.map((src, index)=> (
+            <li key={index} class="list-group-item">
+            <text key={index}>Naziv vozila: {src.auto}, </text>
+            <text key={index}>Naziv salona: {src.salon}, </text>
+            <text key={index}>Datum rezervacije: {src.datumRezervacije}, </text>
+            <text key={index}>Datum isteka: {src.datumDo} </text>
         </li>
+          ))}
       </ul>
+      </div>
       )
 }
 }
