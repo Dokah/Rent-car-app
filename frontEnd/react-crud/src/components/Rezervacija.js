@@ -70,6 +70,9 @@ export default class Homepage extends Component {
           
         });
         console.log(response.data);
+        if(response.data.errno == 1644){
+            alert("Nema više ovog vozila na zalihi!")
+        }
         this.props.history.push("/");
       })
       .catch(e => {

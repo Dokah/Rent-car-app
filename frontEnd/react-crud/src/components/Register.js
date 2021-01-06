@@ -85,7 +85,7 @@ export default class Register extends React.Component {
 
   render() {
     return (
-     <form>
+     <form autocomplete="off">
        <div className="base-container" className= "container" >
          <h3>Register</h3>
         <div className="form-group">
